@@ -18,8 +18,14 @@ function SW()
   N = zeros(12);
   for mu = 0:3
     for nu = 0:3
-      S = 0.5 * Commutator( Gamma(mu), Gamma(nu) );
+      S = i * 0.5 * Commutator( Gamma(mu), Gamma(nu) );
+    if(mu == nu)
+      F = zeros(3);
+    else
       F = rand(3)+i*rand(3);
+      % project onto anti-hermitian part
+      F = 0.5 * (F - F');
+    end
       N += 0.5 * i * csw * [ 
  S(1,1)*F S(1,2)*F S(1,3)*F S(1,4)*F;
  S(2,1)*F S(2,2)*F S(2,3)*F S(2,4)*F;
