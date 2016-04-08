@@ -3,7 +3,7 @@
 function Sigmas()
   for mu = 0:3
     for nu = 0:3
-      if( mu != nu )
+      if( mu ~= nu )
         printf('mu=%d nu=%d\n',mu,nu);
         B = i * 0.5 * Commutator( Gamma(mu), Gamma(nu) )
       end

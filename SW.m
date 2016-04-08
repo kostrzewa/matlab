@@ -20,27 +20,28 @@ function SW()
   for mu = 0:3
     for nu = 0:3
       S = 0.5 * i * Commutator( Gamma(mu), Gamma(nu) );
-    if(mu == nu)
-      F = zeros(3);
-    else
-      F = rand(3)+i*rand(3);
-      % project onto anti-hermitian part
-      F = 0.5 * (F - F');
-    end
-      N += 0.5 * i * csw * [ 
- S(1,1)*F S(1,2)*F S(1,3)*F S(1,4)*F;
- S(2,1)*F S(2,2)*F S(2,3)*F S(2,4)*F;
- S(3,1)*F S(3,2)*F S(3,3)*F S(3,4)*F;
- S(4,1)*F S(4,2)*F S(4,3)*F S(4,4)*F ];
+      if(mu == nu)
+        F = zeros(3);
+      else
+        F = rand(3)+i*rand(3);
+        % project onto anti-hermitian part
+        F = 0.5 * (F - F');
+      end
+      T = [ 
+           S(1,1)*F S(1,2)*F S(1,3)*F S(1,4)*F;
+           S(2,1)*F S(2,2)*F S(2,3)*F S(2,4)*F;
+           S(3,1)*F S(3,2)*F S(3,3)*F S(3,4)*F;
+           S(4,1)*F S(4,2)*F S(4,3)*F S(4,4)*F
+          ];
+      N = N + 0.5 * i * csw * T;
     end
   end
   
-  M += N;
+  M = M + N;
   
   % invert M to obtain what we're really after
   % M = (1 +- im gamma5 + T_ee)^(-1)
 
-  
   M
   
   M = inv(M);
@@ -50,7 +51,7 @@ function SW()
   % compute the trace in dirac space
   for mu = 0:3
     for nu = 0:3
-      if( mu != nu )
+      if( mu ~= nu )
         printf('BEGIN %d %d\n',mu,nu)
         % sigma(mu,nu) (in spin)
         S = i * 0.5 * Commutator( Gamma(mu), Gamma(nu) );
@@ -67,3 +68,5 @@ function SW()
       end
     end
   end 
+  
+  printf('Trace: %f', TR)
